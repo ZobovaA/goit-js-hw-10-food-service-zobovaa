@@ -11,21 +11,42 @@ document.querySelector(".js-menu").innerHTML = menuHTML;
 const Theme = {
   LIGHT: "light-theme",
   DARK: "dark-theme",
-};
+};  
 
-const switchControl = document.querySelector(".theme-switch__control");
 
-const switchBtn = document.querySelector(".theme-switch__track");
-const checkEl = document.querySelector(".theme-switch__toggle");
+const checkEl = document.querySelector('#theme-switch-toggle');
+checkEl.addEventListener('change', switchedInput);
 
-const onBtnClickDark = () => {
-  if (document.body.classList.contains("light-theme")) {
-    document.body.classList.remove("light-theme");
-    document.body.classList.add("dark-theme");
-  } else {
-    document.body.classList.add("light-theme");
-    document.body.classList.remove("dark-theme");
+function switchedInput(event) {
+  event.currentTarget.checked ? checkedInput() : notCheckedInput();
+}
+
+function checkedInput() {
+  document.body.classList.add('dark-theme');
+  document.body.classList.remove('light-theme');
+  localStorage.setItem('theme', 'dark-theme');
+  checkEl.checked = true;
+}
+
+
+function notCheckedInput() {
+  document.body.classList.add('light-theme');
+  document.body.classList.remove('dark-theme');
+  localStorage.setItem('theme', 'light-theme');
+  checkEl.checked = false;
+}
+
+function currentTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light-theme' || savedTheme === null) {
+    notCheckedInput();
+    return;
   }
-};
 
-checkEl.addEventListener("click", onBtnClickDark);
+  if (savedTheme === 'dark-theme') {
+    checkedInput();
+    return;
+  }
+}
+
+currentTheme();
