@@ -12,21 +12,37 @@ const Theme = {
   LIGHT: "light-theme",
   DARK: "dark-theme",
 };
-
+const bodyEl = document.querySelector("body");
 const checkEl = document.querySelector("#theme-switch-toggle");
+bodyEl.classList.add(Theme.LIGHT);
 
-function onClick(e) {
-  if (checkEl.checked = true) {
-    return localStorage.setItem("theme", "dark-theme");
-   
+const lightThemeFunc = () => {
+  bodyEl.classList.add(Theme.LIGHT);
+  bodyEl.classList.remove(Theme.DARK);
+  localStorage.removeItem("theme");
+  localStorage.setItem("theme", Theme.LIGHT);
+};
+
+const darkThemefunc = () => {
+  bodyEl.classList.add(Theme.DARK);
+  bodyEl.classList.remove(Theme.LIGHT);
+  localStorage.removeItem("theme");
+  localStorage.setItem("theme", Theme.DARK);
+};
+
+if (localStorage.getItem("theme") === Theme.DARK) {
+  checkEl.checked = "true";
+  darkThemefunc()
+  
+}
+
+const changeThemeFunc = () => {
+  if (!checkEl.checked) {
+    lightThemeFunc();
+  } else {
+    darkThemefunc();
   }
-}
+};
 
-checkEl.addEventListener("click", onClick);
+checkEl.addEventListener("click", changeThemeFunc);
 
-function isBlackTheme() {
-return localStorage.getItem('theme')=== Theme.DARK
-
-}
-
-console.log(isBlackTheme());
